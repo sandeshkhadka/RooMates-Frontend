@@ -1,5 +1,9 @@
 const Playground = () => {
-  return <div></div>;
+  return (
+    <>
+      <div>This is playground</div>
+    </>
+  );
 };
 
 export default Playground;

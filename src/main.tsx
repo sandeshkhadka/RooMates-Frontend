@@ -4,11 +4,33 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import "./index.css";
 import Playground from "./Playground.tsx";
+import Contribution from "./routes/Contribution.tsx";
+import TaskList from "./routes/TaskList.tsx";
+import Chat from "./routes/Chat.tsx";
+import Dashboard from "./routes/Dashboard.tsx";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
+    children: [
+      {
+        path: "/",
+        element: <Dashboard />,
+      },
+      {
+        path: "/contributions",
+        element: <Contribution />,
+      },
+      {
+        path: "/tasks",
+        element: <TaskList />,
+      },
+      {
+        path: "/chat",
+        element: <Chat />,
+      },
+    ],
   },
   {
     path: "/play",

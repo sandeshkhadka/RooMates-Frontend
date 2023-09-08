@@ -4,7 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
 import "./index.css";
 import Playground from "./Playground.tsx";
-import Contribution from "./routes/Contribution.tsx";
+import Contribution from "./routes/ContributionList.tsx";
 import TaskList from "./routes/TaskList.tsx";
 import Chat from "./routes/Chat.tsx";
 import Dashboard from "./routes/Dashboard.tsx";

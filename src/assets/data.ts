@@ -1,5 +1,7 @@
-export const dummyContriResponse = {
-  contributions: [
+export const dummyContriResponse: {
+  entities: ContributionType[];
+} = {
+  entities: [
     {
       id: "7f3e2c4c-65c8-4854-9cb3-da626a4c9bd9",
       name: "jar",
@@ -32,7 +34,9 @@ export const dummyContriResponse = {
     },
   ],
 };
-export const dummyTaskResponse = {
+export const dummyTaskResponse: {
+  tasks: Task[];
+} = {
   tasks: [
     {
       id: "1823c5fe-0a9b-4b0f-b8b8-57da2981c836",
@@ -50,7 +54,9 @@ export const dummyTaskResponse = {
     },
   ],
 };
-export const dummyUserResponse = {
+export const dummyUserResponse: {
+  users: User[];
+} = {
   users: [
     {
       username: "sandesh",

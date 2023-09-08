@@ -8,9 +8,10 @@ type Task = {
   name: string;
   schedule: string;
   belongsToId: string;
-  status: boolean;
+  status: string;
 };
-type Contribution = {
+type RequireOnly<T, P extends keyof T> = Pick<T, P> & Partial<Omit<T, P>>;
+type ContributionType = {
   id: string;
   name: string;
   type: string;

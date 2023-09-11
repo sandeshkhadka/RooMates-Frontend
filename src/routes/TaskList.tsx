@@ -7,7 +7,7 @@ const TaskList = () => {
     <div className="w-full flex flex-row gap-2">
       <div className="w-1/2 flex flex-col gap-2 py-2">
         {tasklist.map((task) => (
-          <Task task={task} />
+          <Task task={task} key={task.id} />
         ))}
       </div>
       <form

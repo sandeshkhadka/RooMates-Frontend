@@ -8,6 +8,9 @@ import Contribution from "./routes/ContributionList.tsx";
 import TaskList from "./routes/TaskList.tsx";
 import Chat from "./routes/Chat.tsx";
 import Dashboard from "./routes/Dashboard.tsx";
+import { Provider } from "react-redux";
+import store from "./lib/store.ts";
+import { hydrateLogin } from "./features/authentication-slice.ts";
 
 const router = createBrowserRouter([
   {
@@ -37,9 +40,11 @@ const router = createBrowserRouter([
     element: <Playground />,
   },
 ]);
-
+await store.dispatch(hydrateLogin());
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>,
 );

@@ -16,7 +16,7 @@ const ContributionList = () => {
     <div className="w-full flex flex-row gap-2">
       <div className="w-1/2 flex flex-col gap-2 py-2">
         {contributions.map((contrib) => (
-          <Contribution contribution={contrib} />
+          <Contribution contribution={contrib} key={contrib.id} />
         ))}
       </div>
       <form

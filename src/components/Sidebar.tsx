@@ -1,12 +1,12 @@
 import { Link } from "react-router-dom";
 import ProfileInfo from "./ProfileInfo";
 import { useAppDispatch } from "../lib/hooks";
-import { logOUt } from "../features/authentication-slice";
+import { logOut as logOut } from "../features/authentication-slice";
 
 const Sidebar = () => {
   const dispatch = useAppDispatch();
   function logoutHandler() {
-    dispatch(logOUt());
+    dispatch(logOut());
   }
   return (
     <div className="sidebar w-1/5 h-screen text-white bg-teal-700 p-5 ">

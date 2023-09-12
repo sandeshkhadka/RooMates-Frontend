@@ -1,18 +1,24 @@
-import { useEffect, useState } from "react";
-import { dummyUserResponse } from "../assets/data";
 import DeleteIcon from "./Delete";
+import { useAppDispatch, useAuth, useUsername } from "../lib/hooks";
+import { deleteContribution } from "../features/contribution-slice";
+
 type ContributionProps = {
   contribution: ContributionType;
 };
+
 const Contribution = (parms: ContributionProps) => {
   const contribution = parms.contribution;
-  const [username, setUsername] = useState("");
-  useEffect(() => {
-    const userId = contribution.belongsToId;
-    const user = dummyUserResponse.users.find((user) => user.id === userId);
-    const username = user!.username;
-    setUsername(username);
-  }, [contribution.belongsToId]);
+  const dispatch = useAppDispatch();
+
+  const username = useUsername(contribution.belongsToId);
+  const auth = useAuth();
+
+  const ownsThis = contribution.belongsToId === auth.user!.id;
+
+  function handleDelete() {
+    void dispatch(deleteContribution(contribution.id));
+  }
+
   return (
     <div className="flex flex-col px-4 border bg-sky-200">
       <div className="flex flex-row justify-between">
@@ -23,9 +29,8 @@ const Contribution = (parms: ContributionProps) => {
       <div className="flex justify-between">
         <div className="italic ">type: {contribution.type}</div>
         <div>{contribution.passed ? <>Passed</> : <>NotPassed</>}</div>
-        <div className="cursor-pointer">
-
-        <DeleteIcon />
+        <div className="cursor-pointer" onClick={handleDelete}>
+          {ownsThis ? <DeleteIcon /> : null}
         </div>
       </div>
     </div>

@@ -24,7 +24,7 @@ export const hydrateLogin = createAsyncThunk("auth/hydrate", async () => {
     },
   });
   const user = (await response.json()) as UserState | { message: string };
-  return user;
+  return { user, token };
 });
 export const logIn = createAsyncThunk(
   "auth/login",
@@ -71,16 +71,17 @@ const authSlice = createSlice({
       localStorage.setItem("token", auth.token);
     });
     builder.addCase(hydrateLogin.fulfilled, (state, action) => {
-      const user = action.payload;
-      if (user === null) {
+      const payload = action.payload;
+      if (payload === null) {
         return;
       }
-      if ("message" in user) {
-        console.log(user.message);
+      if ("message" in payload.user) {
+        console.log(payload.user.message);
         return;
       }
-      state.user = user;
+      state.user = payload.user;
       state.loggedIn = true;
+      state.token = payload.token;
     });
   },
 });

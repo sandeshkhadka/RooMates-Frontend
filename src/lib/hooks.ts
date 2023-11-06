@@ -19,6 +19,9 @@ export const useTasks = () => {
 export const useUsers = () => {
   return useAppSelector((state) => state.users.userList);
 };
+export const useChat = () => {
+  return useAppSelector((state) => state.chat);
+};
 export const useUsername = (id: string) => {
   const userList = useUsers();
   const user = userList.find((user) => user.id === id);

@@ -1,4 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { API_URL } from "../lib/config";
 type ContributionState = {
   entities: ContributionType[];
 };
@@ -21,7 +22,7 @@ export const fetchContribution = createAsyncThunk(
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      const response = await fetch("http://127.0.0.1:3000/api/contribution", {
+      const response = await fetch(`${API_URL}/api/contribution`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
@@ -42,7 +43,7 @@ export const postContribution = createAsyncThunk(
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      const response = await fetch("http://127.0.0.1:3000/api/contribution", {
+      const response = await fetch(`${API_URL}/api/contribution`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
@@ -68,15 +69,12 @@ export const deleteContribution = createAsyncThunk(
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      const response = await fetch(
-        `http://127.0.0.1:3000/api/contribution/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
+      const response = await fetch(`${API_URL}/api/contribution/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
         },
-      );
+      });
       if (!response.ok) {
         return;
       }

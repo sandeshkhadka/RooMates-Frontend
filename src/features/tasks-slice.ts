@@ -1,5 +1,5 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-
+import { API_URL } from "../lib/config";
 type TaskState = {
   entities: Task[];
 };
@@ -24,7 +24,7 @@ export const fetchTask = createAsyncThunk("task/fetch", async () => {
     console.log("Task fetch failed, No token");
     return;
   }
-  const response = await fetch("http://127.0.0.1:3000/api/task", {
+  const response = await fetch(`${API_URL}/api/task`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -49,7 +49,7 @@ export const postTask = createAsyncThunk(
       console.log("Task fetch failed, No token");
       return;
     }
-    const response = await fetch("http://127.0.0.1:3000/api/task", {
+    const response = await fetch(`${API_URL}/api/task`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -85,7 +85,7 @@ export const updateTask = createAsyncThunk(
       name: task.name,
       status: task.status,
     };
-    const response = await fetch(`http://127.0.0.1:3000/api/task/${task.id}`, {
+    const response = await fetch(`${API_URL}/api/task/${task.id}`, {
       method: "PUT",
       headers: {
         Authorization: `Bearer ${token}`,
@@ -109,7 +109,7 @@ export const deleteTask = createAsyncThunk(
       console.log("No token");
       return;
     }
-    const response = await fetch(`http://127.0.0.1:3000/api/task/${id}`, {
+    const response = await fetch(`${API_URL}/api/task/${id}`, {
       method: "DELETE",
       headers: {
         Authorization: `Bearer ${token}`,

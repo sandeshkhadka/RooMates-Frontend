@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { API_URL } from "../lib/config";
 type UserState = {
   id: string;
   username: string;
@@ -18,7 +19,7 @@ type userCredintails = {
 export const hydrateLogin = createAsyncThunk("auth/hydrate", async () => {
   const token = localStorage.getItem("token");
   if (!token) return null;
-  const response = await fetch("http://127.0.0.1:3000/api/rehydrate", {
+  const response = await fetch(`${API_URL}/api/rehydrate`, {
     headers: {
       Authorization: `Bearer ${token}`,
     },
@@ -29,7 +30,7 @@ export const hydrateLogin = createAsyncThunk("auth/hydrate", async () => {
 export const logIn = createAsyncThunk(
   "auth/login",
   async (userCreds: userCredintails) => {
-    const url = "http://127.0.0.1:3000/signin";
+    const url = `${API_URL}/signin`;
     const response = await fetch(url, {
       method: "POST",
       headers: {

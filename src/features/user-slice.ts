@@ -1,6 +1,8 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { logOut } from "./authentication-slice";
 // import { dummyUserResponse } from "../assets/data";
+import { API_URL } from "../lib/config";
+
 type UserState = {
   userList: User[];
 };
@@ -10,7 +12,7 @@ type UserApiResponse = {
 export const fetchUsers = createAsyncThunk("user/fetch", async () => {
   const token = localStorage.getItem("token");
   if (!token) return;
-  const response = await fetch("http://127.0.0.1:3000/api/users", {
+  const response = await fetch(API_URL + "/api/users", {
     headers: {
       Authorization: `Bearer ${token}`,
     },

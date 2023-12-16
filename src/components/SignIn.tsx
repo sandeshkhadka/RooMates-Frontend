@@ -15,6 +15,7 @@ const SignIn = () => {
           const formData = new FormData(e.target as HTMLFormElement);
           const username = formData.get("username")?.toString();
           const password = formData.get("password")?.toString();
+          console.log(import.meta.env.API_URL)
           if (!(username && password)) {
             return;
           }

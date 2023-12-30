@@ -1,4 +1,3 @@
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import App from "./App.tsx";
@@ -10,7 +9,7 @@ import Chat from "./routes/Chat.tsx";
 import Dashboard from "./routes/Dashboard.tsx";
 import { Provider } from "react-redux";
 import store from "./lib/store.ts";
-import { hydrateLogin } from "./features/authentication-slice.ts";
+// import { hydrateLogin } from "./features/authentication-slice.ts";
 
 const router = createBrowserRouter([
   {
@@ -40,7 +39,7 @@ const router = createBrowserRouter([
     element: <Playground />,
   },
 ]);
-await store.dispatch(hydrateLogin());
+// await store.dispatch(hydrateLogin());
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <Provider store={store}>
     <RouterProvider router={router} />

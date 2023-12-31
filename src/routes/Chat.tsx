@@ -1,5 +1,9 @@
 import { useAppDispatch, useAuth, useChat } from "../lib/hooks";
-import { setConnected, addMessage } from "../features/chat-slice.ts";
+import {
+  setConnected,
+  addMessage,
+  deleteMessage,
+} from "../features/chat-slice.ts";
 import ChatMessage, { ChatMessageType } from "../components/ChatMessage";
 import socketService from "../service/chatSocket.ts";
 import { useEffect, useRef } from "react";
@@ -23,14 +27,27 @@ const Chat = () => {
       // console.log("connected");
       dispatch(setConnected(true));
     });
+
+    socket.on("recentMessages", (messages: { messages: ChatMessageType[] }) => {
+      for (const message of messages.messages) {
+        dispatch(addMessage(message));
+      }
+    });
+
     socket.on("serverToClientMessage", (message: ChatMessageType) => {
       // console.log("message :", message);
       dispatch(addMessage(message));
     });
+
+    socket.on("messageDeleted", (messageId: string) => {
+      dispatch(deleteMessage(messageId));
+    });
+
     socket.on("disconnect", () => {
       // console.log("disconnected");
       dispatch(setConnected(false));
     });
+
     return () => {
       socket.off("connect");
       socket.off("serverToClientMessage");

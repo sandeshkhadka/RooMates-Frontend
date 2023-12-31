@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { logOut } from "./authentication-slice";
+// import { logOut } from "./authentication-slice";
 // import { dummyUserResponse } from "../assets/data";
 import { API_URL } from "../lib/config";
 

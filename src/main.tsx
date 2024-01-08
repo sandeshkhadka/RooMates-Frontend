@@ -10,6 +10,7 @@ import Dashboard from "./routes/Dashboard.tsx";
 import { Provider } from "react-redux";
 import store from "./lib/store.ts";
 import SignUp from "./components/SignUp.tsx";
+import { CreateUser } from "./components/CreateUser.tsx";
 // import { hydrateLogin } from "./features/authentication-slice.ts";
 
 const router = createBrowserRouter([
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
   {
     path: "/signup",
     element: <SignUp />,
+  },
+  {
+    path: "/create_user",
+    element: <CreateUser />,
   },
 ]);
 // await store.dispatch(hydrateLogin());

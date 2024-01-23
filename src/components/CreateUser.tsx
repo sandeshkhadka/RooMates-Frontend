@@ -20,16 +20,10 @@ export const CreateUser = () => {
         onSubmit={(e) => {
           e.preventDefault();
           const formData = new FormData(e.target as HTMLFormElement);
-          const password = formData.get("password")?.toString();
-          if (!(password && token)) {
-            return;
-          }
+          formData.append("token", token || "notoken");
           const response = fetch(`${API_URL}/signup`, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ password, token }),
+            body: formData,
           });
           void response.then((res) => {
             if (res.ok) {
@@ -41,12 +35,14 @@ export const CreateUser = () => {
           });
         }}
       >
-        <label htmlFor="password">password</label>
+        <label htmlFor="password">Password</label>
         <input
           type="password"
           name="password"
           className="border border-black p-1"
         />
+        <label htmlFor="profile_picture">Profile Picture</label>
+        <input type="file" name="profile" />
         <button
           type="submit"
           className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow"

@@ -25,6 +25,9 @@ const Sidebar = () => {
           <Link to={"chat"}>Chat</Link>
         </li>
         <li>
+          <Link to={"settings"}>Settings</Link>
+        </li>
+        <li>
           <button type="button" onClick={logoutHandler}>
             Logout
           </button>

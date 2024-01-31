@@ -11,6 +11,7 @@ import { Provider } from "react-redux";
 import store from "./lib/store.ts";
 import SignUp from "./components/SignUp.tsx";
 import { CreateUser } from "./components/CreateUser.tsx";
+import { SettingsPage } from "./routes/Settings.tsx";
 // import { hydrateLogin } from "./features/authentication-slice.ts";
 
 const router = createBrowserRouter([
@@ -33,6 +34,10 @@ const router = createBrowserRouter([
       {
         path: "/chat",
         element: <Chat />,
+      },
+      {
+        path: "/settings",
+        element: <SettingsPage />,
       },
     ],
   },

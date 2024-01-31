@@ -3,6 +3,7 @@ import { API_URL } from "../lib/config";
 type UserState = {
   id: string;
   username: string;
+  email: string;
 };
 type AuthState = {
   token: string;

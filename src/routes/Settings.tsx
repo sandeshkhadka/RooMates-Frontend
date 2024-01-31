@@ -28,6 +28,7 @@ export const SettingsPage = () => {
     const username = formData.get("username")?.toString();
     const password = formData.get("password")?.toString();
     const password2 = formData.get("password2")?.toString();
+    const oldpassword = formData.get("oldpassword")?.toString();
     const email = formData.get("email")?.toString();
     console.log({
       username,
@@ -67,8 +68,30 @@ export const SettingsPage = () => {
     if (email && email != auth.user.email) {
       console.log("Should sent req to email");
     }
-    if (password && password2 && password == password2) {
-      console.log("Should sent req to password");
+    if (password && oldpassword && password2 && password == password2) {
+      const response = fetch(`${API_URL}/api/settings/password`, {
+        method: "PUT",
+        headers: {
+          Authorization: `Bearer ${auth.token}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          oldPassword: oldpassword,
+          newPassword: password,
+        }),
+      });
+      response
+        .then((res) => {
+          if (res.ok) {
+            setEditingPassword(false);
+            alert("Password changed");
+          } else {
+            alert("Could not update password");
+          }
+        })
+        .catch(() => {
+          return;
+        });
     }
   };
 
@@ -98,6 +121,27 @@ export const SettingsPage = () => {
           </div>
         </div>
 
+        <div className="mb-4">
+          <label htmlFor="oldpassword" className="text-gray-700 font-semibold">
+            Old Password
+          </label>
+          <div className="flex items-center">
+            <input
+              type="password"
+              name="oldpassword"
+              className={`border-b border-gray-300 outline-none flex-grow ${isEditingPassword ? "cursor-text" : "cursor-not-allowed"
+                }`}
+              disabled={!isEditingPassword}
+            />
+            <button
+              type="button"
+              className="ml-2 text-blue-500 hover:text-blue-700 focus:outline-none"
+              onClick={() => setEditingPassword(!isEditingPassword)}
+            >
+              {isEditingPassword ? "Cancel" : "Edit"}
+            </button>
+          </div>
+        </div>
         <div className="mb-4">
           <label htmlFor="password" className="text-gray-700 font-semibold">
             New Password

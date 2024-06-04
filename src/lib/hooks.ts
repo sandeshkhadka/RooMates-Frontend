@@ -22,6 +22,9 @@ export const useUsers = () => {
 export const useChat = () => {
   return useAppSelector((state) => state.chat);
 };
+export const useDashboard = () => {
+  return useAppSelector((state) => state.dashboard);
+};
 export const useUsername = (id: string) => {
   const userList = useUsers();
   const user = userList.find((user) => user.id === id);

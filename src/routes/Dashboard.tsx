@@ -1,15 +1,30 @@
 import { useEffect } from "react";
-import { useAppDispatch } from "../lib/hooks";
-import { fetchPendingTasks } from "../features/dashboard-slice";
+import { useAppDispatch, useDashboard } from "../lib/hooks";
+import {
+  fetchContributionLeaderboard,
+  fetchExpenseLeaderboard,
+  fetchTaskLeaderboard,
+} from "../features/dashboard-slice";
+import ContributionLeaderboard from "../components/ContributionLeaderboard";
+import TaskLeaderboard from "../components/TaskLeaderboard";
+import ExpenseLeaderboard from "../components/ExpenseLeaderboard";
 
 const Dashboard = () => {
   const dispatch = useAppDispatch();
+  const dashboard = useDashboard();
+  console.log(dashboard);
   useEffect(() => {
-    void dispatch(fetchPendingTasks);
+    void dispatch(fetchTaskLeaderboard());
+    void dispatch(fetchExpenseLeaderboard());
+    void dispatch(fetchContributionLeaderboard());
   }, [dispatch]);
   return (
     <>
-      <div>This is Dashboard</div>
+      <ContributionLeaderboard
+        contributions={dashboard.leaderboards.contribution}
+      />
+      <TaskLeaderboard tasks={dashboard.leaderboards.task} />
+      <ExpenseLeaderboard expenses={dashboard.leaderboards.expenses} />
     </>
   );
 };

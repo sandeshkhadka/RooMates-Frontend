@@ -1,65 +1,71 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { API_URL } from "../lib/config";
-import { useAuth } from "../lib/hooks";
-type DistributionApiResponse = {
-  byUser: {
-    userId: string;
-    amount: number;
-  }[];
-};
-type PendingTaskApiResponse = {
-  tasks: {
-    userId: string;
-    amount: number;
-  }[];
-};
-type FriendState = {
-  userId: string;
-  amount: number;
-};
 type state = {
-  contribution: {
-    amount: number;
-    friends: FriendState[];
-  };
-  pendingTaskNo: {
-    amount: number;
-    friends: FriendState[];
+  leaderboards: {
+    contribution: ContributionLeaderboardType;
+    task: TaskLeaderboardType;
+    expenses: ExpenseLeaderboardType;
   };
 };
 
 const initialState: state = {
-  contribution: { amount: 0, friends: [] },
-  pendingTaskNo: { amount: 0, friends: [] },
+  leaderboards: {
+    contribution: [],
+    task: {
+      pending: [],
+      missed: [],
+      completed: [],
+    },
+    expenses: [],
+  },
 };
 
-export const fetchContributionDistribution = createAsyncThunk(
-  "dashboard/distribution",
+export const fetchContributionLeaderboard = createAsyncThunk(
+  "dashboard/leaderboard/contribution",
   async () => {
     const token = localStorage.getItem("token");
     if (!token) {
       return;
     }
-    const response = await fetch(`${API_URL}/api/contribution/distribution`, {
+    const response = await fetch(`${API_URL}/api/leaderboard/contribution`, {
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${token} `,
         "Content-Type": "application/json",
       },
     });
     if (!response.ok) {
       return;
     }
-    return (await response.json()) as DistributionApiResponse;
+    return (await response.json()) as ContributionLeaderboardType;
   },
 );
-export const fetchPendingTasks = createAsyncThunk(
-  "dashboard/pendingTasks",
+export const fetchTaskLeaderboard = createAsyncThunk(
+  "dashboard/leaderboard/task",
   async () => {
     const token = localStorage.getItem("token");
     if (!token) {
       return;
     }
-    const response = await fetch(`${API_URL}/api/dashboard/task/pending`, {
+    const response = await fetch(`${API_URL}/api/leaderboard/task`, {
+      headers: {
+        Authorization: `Bearer ${token} `,
+        "Content-Type": "application/json",
+      },
+    });
+    if (!response.ok) {
+      return;
+    }
+    return (await response.json()) as TaskLeaderboardType;
+  },
+);
+export const fetchExpenseLeaderboard = createAsyncThunk(
+  "dashboard/leaderboard/expense",
+  async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return;
+    }
+    const response = await fetch(`${API_URL}/api/leaderboard/expense`, {
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
@@ -68,7 +74,7 @@ export const fetchPendingTasks = createAsyncThunk(
     if (!response.ok) {
       return;
     }
-    return (await response.json()) as PendingTaskApiResponse;
+    return (await response.json()) as ExpenseLeaderboardType;
   },
 );
 const dashboardSlice = createSlice({
@@ -77,33 +83,26 @@ const dashboardSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchContributionDistribution.fulfilled, (state, action) => {
+      .addCase(fetchContributionLeaderboard.fulfilled, (state, action) => {
         if (!action.payload) {
-          console.log("distribution not received");
+          console.log("Failed to fetch Contribution Leaderboard");
           return;
         }
-        const auth = useAuth();
-        for (const entry of action.payload.byUser) {
-          if (entry.userId == auth.user!.id) {
-            state.contribution.amount = entry.amount;
-          } else {
-            state.contribution.friends.push(entry);
-          }
-        }
+        state.leaderboards.contribution = action.payload;
       })
-      .addCase(fetchPendingTasks.fulfilled, (state, action) => {
+      .addCase(fetchTaskLeaderboard.fulfilled, (state, action) => {
         if (!action.payload) {
           console.log("pending tasks not received");
           return;
         }
-        const auth = useAuth();
-        for (const entry of action.payload.tasks) {
-          if (entry.userId == auth.user!.id) {
-            state.pendingTaskNo.amount = entry.amount;
-          } else {
-            state.pendingTaskNo.friends.push(entry);
-          }
+        state.leaderboards.task = action.payload;
+      })
+      .addCase(fetchExpenseLeaderboard.fulfilled, (state, action) => {
+        if (!action.payload) {
+          console.log("Failed to fetch Expense Leaderboard");
+          return;
         }
+        state.leaderboards.expenses = action.payload;
       });
   },
 });

@@ -25,9 +25,14 @@ export const fetchTask = createAsyncThunk("task/fetch", async () => {
     return;
   }
   const response = await fetch(`${API_URL}/api/task`, {
+    method: "POST",
     headers: {
       Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     },
+    body: JSON.stringify({
+      page: 1,
+    }),
   });
   if (!response.ok) {
     console.log("Task fetch response not ok");
@@ -49,7 +54,7 @@ export const postTask = createAsyncThunk(
       console.log("Task fetch failed, No token");
       return;
     }
-    const response = await fetch(`${API_URL}/api/task`, {
+    const response = await fetch(`${API_URL}/api/create/task`, {
       method: "POST",
       headers: {
         Authorization: `Bearer ${token}`,

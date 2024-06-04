@@ -22,11 +22,15 @@ export const fetchContribution = createAsyncThunk(
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      const response = await fetch(`${API_URL}/api/contribution`, {
+      const response = await fetch(`${API_URL}/api/contributions`, {
+        method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          page: 1,
+        }),
       });
       const responseObj = (await response.json()) as FetchApiResponse;
       return responseObj.contributions;
@@ -43,7 +47,7 @@ export const postContribution = createAsyncThunk(
     const token = localStorage.getItem("token");
     if (!token) return;
     try {
-      const response = await fetch(`${API_URL}/api/contribution`, {
+      const response = await fetch(`${API_URL}/api/create/contribution`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${token}`,

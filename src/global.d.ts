@@ -21,3 +21,29 @@ type ContributionType = {
   approvedBy: string[];
   passed: boolean;
 };
+type ContributionLeaderboardType = {
+  rank: number;
+  userId: string;
+  amount: number;
+}[];
+type ExpenseLeaderboardType = {
+  rank: number;
+  category: string;
+  amount: {
+    amount: number | null;
+  };
+}[];
+type TaskLeaderboardType = {
+  pending: {
+    userId: string;
+    amount: number;
+  }[];
+  completed: {
+    userId: string;
+    amount: number;
+  }[];
+  missed: {
+    userId: string;
+    amount: number;
+  }[];
+};

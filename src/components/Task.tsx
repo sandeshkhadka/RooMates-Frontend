@@ -1,15 +1,12 @@
-// import { useEffect, useState } from "react";
-// import { dummyUserResponse } from "../assets/data";
 import { deleteTask, updateTask } from "../features/tasks-slice";
 import { useAppDispatch, useAuth, useUsername } from "../lib/hooks";
-import DeleteIcon from "./Delete";
-
+import { Flex, Paper, Text } from "@mantine/core";
+import { IconUser, IconNotes, IconCheck, IconTrash } from "@tabler/icons-react";
 type TaskProps = {
   task: Task;
 };
 const Task = (props: TaskProps) => {
   const { task } = props;
-  // const [username, setUsername] = useState("");
   const dispatch = useAppDispatch();
   const auth = useAuth();
   const username = useUsername(task.belongsToId);
@@ -26,36 +23,32 @@ const Task = (props: TaskProps) => {
   function handleDelete() {
     void dispatch(deleteTask(task.id));
   }
-  // useEffect(() => {
-  //   const userId = task.belongsToId;
-  //   const user = dummyUserResponse.users.find((user) => user.id === userId);
-  //   const username = user!.username;
-  //   setUsername(username);
-  // }, [task.belongsToId]);
   return (
-    <div className="flex flex-col px-4 py-2 gap-2  border bg-sky-200">
-      <div className="flex flex-row justify-between">
-        <div className="text-xl font-bold">{username}</div>
-        <div>{task.schedule}</div>
-        <div className="text-xl font-bold"> {task.status}</div>
-      </div>
-      <div>todo: {task.name}</div>
-      <div className="flex flex-row justify-between">
-        {belogsTo && task.status !== "Completed" ? (
-          <div className="cursor-pointer">
-            <button
-              className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow"
-              onClick={markCompleteHandler}
-            >
-              Mark as Complete
-            </button>
-          </div>
-        ) : null}
-        <div className="cursor-pointer" onClick={handleDelete}>
-          {belogsTo ? <DeleteIcon /> : null}
-        </div>
-      </div>
-    </div>
+    <Paper withBorder={true} radius="md" shadow="xs" p="sm" m="xs">
+      <Flex direction="column" px="md" gap="1px">
+        <Flex direction="row" justify="space-between">
+          <Flex>
+            <IconUser color="gray" />
+            <Text size="md" c="gray">
+              {username}
+            </Text>
+          </Flex>
+          <Text>{task.schedule}</Text>
+          <Text >{task.status}</Text>
+        </Flex>
+        <Flex justify="space-between">
+          <Flex gap="2px">
+            <IconNotes />
+            <Text>{task.name}</Text>
+          </Flex>
+          <Flex gap="md">
+            {belogsTo && task.status !== "Completed" ? <IconCheck color="green" onClick={markCompleteHandler} cursor="pointer" /> : null}
+            {belogsTo ? <IconTrash cursor="pointer" onClick={handleDelete} /> : null}
+          </Flex>
+
+        </Flex>
+      </Flex>
+    </Paper>
   );
 };
 

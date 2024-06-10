@@ -5,6 +5,7 @@ type state = {
     contribution: ContributionLeaderboardType;
     task: TaskLeaderboardType;
     expenses: ExpenseLeaderboardType;
+    expenseTimeline: ExpenseTimelineType;
   };
 };
 
@@ -17,6 +18,7 @@ const initialState: state = {
       completed: [],
     },
     expenses: [],
+    expenseTimeline: []
   },
 };
 
@@ -39,6 +41,25 @@ export const fetchContributionLeaderboard = createAsyncThunk(
     return (await response.json()) as ContributionLeaderboardType;
   },
 );
+export const fetchExpenseTimeline = createAsyncThunk(
+  "dashboard/leaderboard/expenseTimeline",
+  async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return;
+    }
+    const response = await fetch(`${API_URL}/api/leaderboard/expenseTimeline`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json"
+      }
+    });
+    if (!response.ok) {
+      return;
+    }
+    return (await response.json()) as ExpenseTimelineType
+  }
+)
 export const fetchTaskLeaderboard = createAsyncThunk(
   "dashboard/leaderboard/task",
   async () => {
@@ -103,6 +124,13 @@ const dashboardSlice = createSlice({
           return;
         }
         state.leaderboards.expenses = action.payload;
+      })
+      .addCase(fetchExpenseTimeline.fulfilled, (state, action) => {
+        if (!action.payload) {
+          console.log("Failed to fetch Expense Timeline");
+          return;
+        }
+        state.leaderboards.expenseTimeline = action.payload
       });
   },
 });

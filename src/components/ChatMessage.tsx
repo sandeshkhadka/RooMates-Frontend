@@ -1,6 +1,8 @@
 import DeleteIcon from "./Delete";
 import { useAuth } from "../lib/hooks";
 import socketService from "../service/chatSocket";
+import { IconTrash } from "@tabler/icons-react";
+import { Flex, Paper, Text } from "@mantine/core";
 export type ChatMessageType = {
   id: string;
   message: string;
@@ -26,20 +28,20 @@ const ChatMessage = (message: ChatMessageType) => {
   }
 
   return (
-    <div className="flex flex-col px-4 border bg-sky-200">
-      <div className="flex flex-row justify-between">
-        <div className="flex flex-row gap-2">
-          <div className="flex flex-row">
-            <div className="text-red-500">{message.sender}</div>[{" "}
-            {formattedTimestamp}] :
-          </div>
-          <div>{message.message}</div>
-        </div>
-        <div className="cursor-pointer" onClick={deletehandler}>
-          {ownsThis ? <DeleteIcon /> : null}
-        </div>
-      </div>
-    </div>
+    <Paper shadow="xs" m="xs" p="xs">
+      <Flex direction="column" px="xs">
+        <Flex direction="row" justify="space-between" >
+          <Flex direction="row" gap="2">
+            <Flex>
+              <Text c="red" >{message.sender}</Text>[{" "}
+              {formattedTimestamp}] :
+            </Flex>
+            <Text>{message.message}</Text>
+          </Flex>
+          {ownsThis ? <IconTrash onClick={deletehandler} cursor="pointer" /> : null}
+        </Flex>
+      </Flex >
+    </Paper>
   );
 };
 

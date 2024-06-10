@@ -1,0 +1,28 @@
+.label {
+  color: rgb(55 65 81);
+  font-weight: 600;
+}
+
+.input {
+  border: none;
+  border-color: rgb(209 213 219);
+  border-bottom: 1px solid lightgray;
+  border-radius: 0%;
+}
+
+.input:disabled {
+  background-color: white;
+}
+
+.button {
+  color: rgb(59 130 246);
+  background-color: white;
+  margin-top: rem(20px);
+  width: 10%;
+
+}
+
+.button:hover {
+  color: rgb(29 78 216);
+  background-color: white;
+}

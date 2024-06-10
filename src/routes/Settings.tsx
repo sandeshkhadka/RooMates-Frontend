@@ -1,8 +1,10 @@
+import { useForm } from "@mantine/form";
+import { Button, Container, Flex, TextInput } from "@mantine/core";
 import { FormEvent, useState } from "react";
 import { useAppDispatch, useAuth } from "../lib/hooks";
 import { API_URL } from "../lib/config";
 import { hydrateLogin } from "../features/authentication-slice";
-
+import styles from "./Settings.module.css"
 type UpdateUsernameResponse = {
   old_username: string;
   token: string;
@@ -19,17 +21,27 @@ export const SettingsPage = () => {
     return <>Not authorized </>;
   }
 
-  const handleSaveChanges = (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      username: auth.user.username,
+      oldPassword: "",
+      newPassword: "",
+      verifyNewPassword: "",
+      email: auth.user.email
+    }
+
+  });
+
+  const handleSaveChanges = form.onSubmit((values) => {
     if (!(auth.user && auth.token)) {
       return;
     }
-    const formData = new FormData(e.target as HTMLFormElement);
-    const username = formData.get("username")?.toString();
-    const password = formData.get("password")?.toString();
-    const password2 = formData.get("password2")?.toString();
-    const oldpassword = formData.get("oldpassword")?.toString();
-    const email = formData.get("email")?.toString();
+    const username = values.username;
+    const password = values.newPassword
+    const password2 = values.verifyNewPassword
+    const oldpassword = values.oldPassword
+    const email = values.email
     console.log({
       username,
       password,
@@ -93,128 +105,159 @@ export const SettingsPage = () => {
           return;
         });
     }
-  };
-
+  })
   return (
-    <div className="mt-8 ml-8">
-      <form onSubmit={handleSaveChanges}>
-        <div className="mb-4">
-          <label htmlFor="username" className="text-gray-700 font-semibold">
-            Username
-          </label>
-          <div className="flex items-center">
-            <input
-              type="text"
-              name="username"
-              className={`border-b border-gray-300 outline-none flex-grow ${isEditingUsername ? "cursor-text" : "cursor-not-allowed"
-                }`}
-              defaultValue={auth.user.username}
-              disabled={!isEditingUsername}
-            />
-            <button
-              type="button"
-              className="ml-2 text-blue-500 hover:text-blue-700 focus:outline-none"
-              onClick={() => setEditingUsername(!isEditingUsername)}
-            >
-              {isEditingUsername ? "Cancel" : "Edit"}
-            </button>
-          </div>
-        </div>
 
-        <div className="mb-4">
-          <label htmlFor="oldpassword" className="text-gray-700 font-semibold">
-            Old Password
-          </label>
-          <div className="flex items-center">
-            <input
-              type="password"
-              name="oldpassword"
-              className={`border-b border-gray-300 outline-none flex-grow ${isEditingPassword ? "cursor-text" : "cursor-not-allowed"
-                }`}
-              disabled={!isEditingPassword}
-            />
-            <button
-              type="button"
-              className="ml-2 text-blue-500 hover:text-blue-700 focus:outline-none"
-              onClick={() => setEditingPassword(!isEditingPassword)}
-            >
-              {isEditingPassword ? "Cancel" : "Edit"}
-            </button>
-          </div>
-        </div>
-        <div className="mb-4">
-          <label htmlFor="password" className="text-gray-700 font-semibold">
-            New Password
-          </label>
-          <div className="flex items-center">
-            <input
-              type="password"
-              name="password"
-              className={`border-b border-gray-300 outline-none flex-grow ${isEditingPassword ? "cursor-text" : "cursor-not-allowed"
-                }`}
-              disabled={!isEditingPassword}
-            />
-            <button
-              type="button"
-              className="ml-2 text-blue-500 hover:text-blue-700 focus:outline-none"
-              onClick={() => setEditingPassword(!isEditingPassword)}
-            >
-              {isEditingPassword ? "Cancel" : "Edit"}
-            </button>
-          </div>
-        </div>
-        <div className="mb-4">
-          <label htmlFor="password2" className="text-gray-700 font-semibold">
-            Verify New Password
-          </label>
-          <div className="flex items-center">
-            <input
-              type="password"
-              name="password2"
-              className={`border-b border-gray-300 outline-none flex-grow ${isEditingPassword ? "cursor-text" : "cursor-not-allowed"
-                }`}
-              disabled={!isEditingPassword}
-            />
-            <button
-              type="button"
-              className="ml-2 text-blue-500 hover:text-blue-700 focus:outline-none"
-              onClick={() => setEditingPassword(!isEditingPassword)}
-            >
-              {isEditingPassword ? "Cancel" : "Edit"}
-            </button>
-          </div>
-        </div>
+    <Container mt="sm" ml="sm" w="100%">
+      <form >
+        <Flex align="center">
+          <TextInput
+            label="Username"
+            classNames={
+              {
+                label: styles.label,
+                input: styles.input
+              }
+            }
+            key={form.key("username")}
+            {...form.getInputProps("username")}
+            disabled={!isEditingUsername}
+          />
+          <Button
+            type="button"
+            size="md"
+            classNames={
+              {
+                root: styles.button
+              }
+            }
+            fw="normal"
+            onClick={() => setEditingUsername(!isEditingUsername)}
+          >
+            {isEditingUsername ? "Cancel" : "Edit"}
+          </Button>
+        </Flex>
 
-        <div className="mb-4">
-          <label htmlFor="email" className="text-gray-700 font-semibold">
-            Email
-          </label>
-          <div className="flex items-center">
-            <input
-              type="text"
-              name="email"
-              className={`border-b border-gray-300 outline-none flex-grow ${isEditingEmail ? "cursor-text" : "cursor-not-allowed"
-                }`}
-              defaultValue={auth.user.email}
-              disabled={!isEditingEmail}
-            />
-            <button
-              type="button"
-              className="ml-2 text-blue-500 hover:text-blue-700 focus:outline-none"
-              onClick={() => setEditingEmail(!isEditingEmail)}
-            >
-              {isEditingEmail ? "Cancel" : "Edit"}
-            </button>
-          </div>
-        </div>
+        <Flex align="center">
+          <TextInput
+            type="password"
+            label="Old Password"
+            classNames={
+              {
+                label: styles.label,
+                input: styles.input,
+              }
+            }
+            key={form.key("oldPassword")}
+            {...form.getInputProps("oldPassword")}
+            disabled={!isEditingPassword}
+          />
+          <Button
+            type="button"
+            size="md"
+            classNames={
+              {
+                root: styles.button
+              }
+            }
+            fw="normal"
 
-        <button
+            onClick={() => setEditingPassword(!isEditingPassword)}
+          >
+            {isEditingPassword ? "Cancel" : "Edit"}
+          </Button>
+        </Flex>
+        <Flex align="center">
+          <TextInput
+            label="New Password"
+            type="password"
+            classNames={
+              {
+
+                label: styles.label,
+                input: styles.input,
+              }
+            }
+            key={form.key("newPassword")}
+            {...form.getInputProps("newPassword")}
+            disabled={!isEditingPassword}
+          />
+          <Button
+            type="button"
+            classNames={
+              {
+                root: styles.button
+              }
+            }
+            onClick={() => setEditingPassword(!isEditingPassword)}
+          >
+            {isEditingPassword ? "Cancel" : "Edit"}
+          </Button>
+        </Flex>
+        <Flex align="center">
+          <TextInput
+            type="password"
+            label="Verify New Password"
+            classNames={
+              {
+                input: styles.input,
+                label: styles.label
+              }
+            }
+            key={form.key("verifyNewPassword")}
+            {...form.getInputProps("verifyNewPassword")}
+            disabled={!isEditingPassword}
+          />
+          <Button
+            type="button"
+            classNames={{
+              root: styles.button
+            }}
+            onClick={() => setEditingPassword(!isEditingPassword)}
+          >
+            {isEditingPassword ? "Cancel" : "Edit"}
+          </Button>
+        </Flex>
+
+        <Flex align="center">
+          <TextInput
+            type="text"
+            label="Email"
+            classNames={
+              {
+                input: styles.input,
+                label: styles.label
+              }
+            }
+            defaultValue={auth.user.email}
+            disabled={!isEditingEmail}
+            key={form.key("email")}
+            {...form.getInputProps("email")}
+          />
+          <Button
+            type="button"
+            classNames={
+              {
+                root: styles.button
+              }
+            }
+            onClick={() => setEditingEmail(!isEditingEmail)}
+          >
+            {isEditingEmail ? "Cancel" : "Edit"}
+          </Button>
+        </Flex>
+
+        <Button
           type="submit"
-          className="bg-blue-400 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded focus:outline-none"
+          bg="blue"
+          c="white"
+          mt="md"
+          px="xl"
+          size="compact-xl"
         >
           Save Changes
-        </button>
+        </Button>
       </form>
-    </div>
+    </Container >
   );
 };

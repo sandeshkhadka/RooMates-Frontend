@@ -6,6 +6,8 @@ import {
   fetchContribution,
   postContribution,
 } from "../features/contribution-slice";
+import { Button, Container, Flex, NativeSelect, NumberInput, Paper, ScrollArea, TextInput } from "@mantine/core";
+import { useForm } from "@mantine/form";
 const ContributionTypes = [
   "vegetables",
   "water",
@@ -22,56 +24,102 @@ const ContributionList = () => {
   useEffect(() => {
     void dispatch(fetchContribution());
   }, [dispatch]);
+  const form = useForm({
+    mode: "uncontrolled",
+    initialValues: {
+      name: "",
+      amount: "",
+      type: "vegetables"
+    }
+  })
   return (
-    <div className="w-full flex flex-row gap-2">
-      <div className="w-1/2 overflow-scroll no-scrollbar flex flex-col gap-2 py-2">
-        {contributions.map((contrib) => (
-          <Contribution contribution={contrib} key={contrib.id} />
-        ))}
-      </div>
-      <form
-        className="flex flex-col gap-2 border w-1/2 h-fit m-2 p-2"
-        onSubmit={(e) => {
-          e.preventDefault();
-          const formData = new FormData(e.target as HTMLFormElement);
-          const name = formData.get("name")?.toString();
-          const amount = formData.get("amount")?.toString();
-          const type = formData.get("type")?.toString();
-          if (name && amount && type) {
-            const amountInt = parseInt(amount);
-            const draftContribution: DraftContribution = {
-              name,
-              amount: amountInt,
-              type,
-            };
-            void dispatch(postContribution(draftContribution));
-          }
-        }}
-      >
-        <label htmlFor="name">Name</label>
-        <input name="name" type="text" className="border border-black p-1" />
-        <label htmlFor="amount">Amount</label>
-        <input
-          name="amount"
-          type="number"
-          className="border border-black p-1"
-        />
-        <label htmlFor="type">Type</label>
-        <select className="p-1" name="type">
-          {ContributionTypes.map((contrib) => (
-            <option value={contrib} className="p-1">
-              {contrib}
-            </option>
+    <Flex w="100%" gap="2px">
+      <ScrollArea flex="2" type="never" h="100vh">
+        <Flex direction="column" gap="2px" py="xs" >
+          {contributions.map((contrib) => (
+            <Contribution contribution={contrib} key={contrib.id} />
           ))}
-        </select>
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow"
+        </Flex>
+      </ScrollArea>
+      <Container flex="1">
+        <form
+          onSubmit={form.onSubmit((values) => {
+            const { name, amount, type } = values
+            if (name && amount && type) {
+              const amountInt = parseInt(amount);
+              const draftContribution: DraftContribution = {
+                name,
+                amount: amountInt,
+                type,
+              };
+              void dispatch(postContribution(draftContribution));
+              form.reset()
+            }
+          })}
         >
-          Submit
-        </button>
-      </form>
-    </div>
+          <Paper withBorder={true} shadow="xs" mt="sm" >
+            <Flex direction="column" gap="2px" h="fit" m="2px" p="2px">
+              <TextInput styles={
+                {
+                  input: {
+                    border: "2px solid lightgray",
+                    borderRadius: "0",
+                    outline: "none",
+                    padding: "4px"
+                  }
+                }
+              }
+                name="name" label="Name" p="xs" key={form.key("name")} {...form.getInputProps('name')} />
+              <NumberInput
+                name="amount"
+                p="xs"
+                label="Amount"
+                key={form.key('amount')}
+                styles={
+                  {
+                    input: {
+                      border: "2px solid lightgray",
+                      borderRadius: "0",
+                      outline: "none",
+                      padding: "4px"
+                    }
+                  }
+                }
+                {...form.getInputProps("amount")}
+              />
+              <NativeSelect label="Type" data={ContributionTypes} styles={
+                {
+                  input: {
+                    border: "2px solid lightgray",
+                    borderRadius: "0",
+                    outline: "none",
+                    padding: "4px"
+                  }
+                }
+              }
+                p="xs"
+                key={form.key('type')} {...form.getInputProps("type")} />
+
+              <Button
+                type="submit"
+                m="xs"
+                styles={
+                  {
+                    root: {
+                      backgroundColor: "#228BE6",
+                      color: "white"
+                    }
+                  }
+                }
+              >
+                Submit
+              </Button>
+            </Flex>
+          </Paper>
+        </form>
+      </Container>
+
+    </Flex>
   );
 };
 

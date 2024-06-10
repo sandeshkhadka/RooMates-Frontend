@@ -1,7 +1,10 @@
 import { useAuth } from "../lib/hooks";
 import { API_URL } from "../lib/config";
 import { useEffect, useState } from "react";
-const ProfileInfo = () => {
+import { UnstyledButton, Group, Avatar, Text, rem } from "@mantine/core";
+import classes from "./ProfileInfo.module.css";
+
+export function ProfileInfo() {
   const auth = useAuth();
   const [imageUrl, setImageUrl] = useState("");
   useEffect(() => {
@@ -32,13 +35,21 @@ const ProfileInfo = () => {
   }, [auth]);
 
   return (
-    <div className="flex flex-col items-center text-center ">
-      <img src={imageUrl} className="h-28 w-28 bg-sky-500 rounded-full"></img>
-      <div className="info">
-        <p className="text-xs">@{auth.user?.username}</p>
-      </div>
-    </div>
-  );
-};
+    <UnstyledButton className={classes.user}>
+      <Group>
+        <Avatar src={imageUrl} radius="xl" />
 
+        <div style={{ flex: 1 }}>
+          <Text size="sm" fw={500}>
+            {auth.user?.username}
+          </Text>
+
+          <Text c="dimmed" size="xs">
+            {auth.user?.email}
+          </Text>
+        </div>
+      </Group>
+    </UnstyledButton>
+  );
+}
 export default ProfileInfo;

@@ -12,6 +12,9 @@ import store from "./lib/store.ts";
 import SignUp from "./components/SignUp.tsx";
 import { CreateUser } from "./components/CreateUser.tsx";
 import { SettingsPage } from "./routes/Settings.tsx";
+import "@mantine/core/styles.layer.css";
+import '@mantine/charts/styles.css';
+import { MantineProvider } from "@mantine/core";
 // import { hydrateLogin } from "./features/authentication-slice.ts";
 
 const router = createBrowserRouter([
@@ -56,7 +59,9 @@ const router = createBrowserRouter([
 ]);
 // await store.dispatch(hydrateLogin());
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <Provider store={store}>
-    <RouterProvider router={router} />
-  </Provider>,
+  <MantineProvider>
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
+  </MantineProvider>
 );

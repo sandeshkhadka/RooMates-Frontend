@@ -26,6 +26,10 @@ type ContributionLeaderboardType = {
   userId: string;
   amount: number;
 }[];
+type ExpenseTimelineType = {
+  createdAt: string;
+  sum: string;
+}[]
 type ExpenseLeaderboardType = {
   rank: number;
   category: string;

@@ -7,6 +7,9 @@ import {
 import ChatMessage, { ChatMessageType } from "../components/ChatMessage";
 import socketService from "../service/chatSocket.ts";
 import { useEffect, useRef } from "react";
+import { Button, Flex, Paper, TextInput } from "@mantine/core";
+import styles from "./Chat.module.css"
+
 type ChatMessagePayload = Omit<ChatMessageType, "id">;
 // type MessageEventData = ChatMessageType[];
 const Chat = () => {
@@ -60,9 +63,9 @@ const Chat = () => {
   }
   return (
     <>
-      <div className="border border-black p-2 m-2 w-full">
+      <Paper withBorder={true} p="xs" m="xs" w="100%" >
         {chatState.connected ? (
-          <div className="flex flex-col justify-between h-full">
+          <Flex direction="column" h="100%" justify="space-between">
             <div>
               {chatState.messages.map((message) => (
                 <ChatMessage
@@ -74,7 +77,7 @@ const Chat = () => {
               ))}
             </div>
             <form
-              className="flex flex-row gap-2 border w-full h-fit m-2 p-2"
+              className={styles.formclass}
               onSubmit={(e) => {
                 e.preventDefault();
                 if (socketService.socket == null) {
@@ -96,25 +99,45 @@ const Chat = () => {
                 console.log("sent message");
               }}
             >
-              <input
+              <TextInput
                 name="message"
-                type="text"
-                className="border border-black p-1 w-11/12"
                 id="message"
+                w="90%"
+                styles={
+                  {
+                    input: {
+                      border: "2px solid lightgray",
+                      borderRadius: "0",
+                      outline: "none",
+                      padding: "4px"
+                    }
+                  }
+                }
                 ref={inputField}
               />
-              <button
+              <Button
                 type="submit"
-                className="bg-blue-500 w-1/12 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded shadow"
+                px="md"
+                py="xs"
+                radius="sm"
+                w="10%"
+                styles={
+                  {
+                    root: {
+                      backgroundColor: "#228BE6",
+                      color: "white"
+                    }
+                  }
+                }
               >
                 Send
-              </button>
+              </Button>
             </form>
-          </div>
+          </Flex>
         ) : (
           <div>disconnected</div>
         )}
-      </div>
+      </Paper >
     </>
   );
 };

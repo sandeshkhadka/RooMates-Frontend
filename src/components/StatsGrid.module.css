@@ -1,0 +1,19 @@
+.root {
+  padding: calc(var(--mantine-spacing-xl) * 1.5);
+}
+
+.value {
+  /* font-size: rem(24px); */
+  font-size: 34px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.icon {
+  color: light-dark(var(--mantine-color-gray-4), var(--mantine-color-dark-3));
+}
+
+.title {
+  font-weight: 700;
+  text-transform: uppercase;
+}

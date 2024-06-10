@@ -1,0 +1,8 @@
+.formclass {
+  display: flex;
+  flex-direction: row;
+  margin: 2px;
+  padding: 2px;
+  gap: 8px;
+  /* border: 1px solid black; */
+}

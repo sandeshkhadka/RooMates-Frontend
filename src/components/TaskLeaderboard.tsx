@@ -12,14 +12,6 @@ const TaskLeaderboard = (parms: TaskLeaderboardParamsType) => {
     return user?.username;
   }
   const { completed, missed, pending } = parms.tasks
-  const colors = ["indigo.6", "yellow.6", "teal.6", "gray.6"]
-  const data = parms.tasks.completed.map((task, index) => {
-    return {
-      name: resolveUsername(task.userId) || "",
-      value: task.amount || 0,
-      color: colors[index]
-    }
-  })
   return (
     <Flex>
       <Paper withBorder={true} radius="md" shadow="lg" px="sm">
@@ -35,7 +27,7 @@ const TaskLeaderboard = (parms: TaskLeaderboardParamsType) => {
                   </Table.Tr>
                 </Table.Thead>
                 <Table.Tbody>
-                  {pending.map((item, index) => {
+                  {pending.map((item) => {
                     return (
                       <Table.Tr key={item.userId}>
                         <Table.Td><Text fw="400">{resolveUsername(item.userId)}</Text></Table.Td>

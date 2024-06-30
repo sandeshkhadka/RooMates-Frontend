@@ -1,6 +1,6 @@
 import { useForm } from "@mantine/form";
 import { Button, Container, Flex, TextInput } from "@mantine/core";
-import { FormEvent, useState } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAuth } from "../lib/hooks";
 import { API_URL } from "../lib/config";
 import { hydrateLogin } from "../features/authentication-slice";
@@ -109,7 +109,7 @@ export const SettingsPage = () => {
   return (
 
     <Container mt="sm" ml="sm" w="100%">
-      <form >
+      <form onSubmit={handleSaveChanges}>
         <Flex align="center">
           <TextInput
             label="Username"

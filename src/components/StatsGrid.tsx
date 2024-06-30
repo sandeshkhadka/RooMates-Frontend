@@ -1,20 +1,10 @@
-import { Flex, Group, Paper, SimpleGrid, Text } from "@mantine/core";
+import { Flex, Paper, Text } from "@mantine/core";
 import {
-  IconUserPlus,
-  IconDiscount2,
-  IconReceipt2,
-  IconCoin,
   IconArrowRight,
 } from "@tabler/icons-react";
 import classes from "./StatsGrid.module.css";
 import { useDashboard, useUsers } from "../lib/hooks";
 
-const icons = {
-  user: IconUserPlus,
-  discount: IconDiscount2,
-  receipt: IconReceipt2,
-  coin: IconCoin,
-};
 type SplitMapEntry = {
   id: string;
   amount: number;

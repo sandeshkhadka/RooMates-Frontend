@@ -1,4 +1,3 @@
-import DeleteIcon from "./Delete";
 import { useAuth } from "../lib/hooks";
 import socketService from "../service/chatSocket";
 import { IconTrash } from "@tabler/icons-react";

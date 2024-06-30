@@ -1,4 +1,4 @@
-import { DonutChart, PieChart } from "@mantine/charts";
+import { PieChart } from "@mantine/charts";
 import { useUsers } from "../lib/hooks";
 import { Flex, Paper, Table, Text } from "@mantine/core";
 type ContributionLeaderboardParamsType = {

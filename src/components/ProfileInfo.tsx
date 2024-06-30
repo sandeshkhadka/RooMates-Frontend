@@ -1,7 +1,7 @@
 import { useAuth } from "../lib/hooks";
 import { API_URL } from "../lib/config";
 import { useEffect, useState } from "react";
-import { UnstyledButton, Group, Avatar, Text, rem } from "@mantine/core";
+import { UnstyledButton, Group, Avatar, Text } from "@mantine/core";
 import classes from "./ProfileInfo.module.css";
 
 export function ProfileInfo() {
